@@ -1,0 +1,78 @@
+\section{Ventajas del TDD, Posibles problemas del TDD y Sus Soluciones} 
+\textbf{}\\
+
+\begin{flushleft}
+\begin{itemize}
+\textbf{1.   Ventajas del TDD}
+\textbf{}\\
+\textbf{- Mayor calidad }
+
+Garantiza que las pruebas se ejecutan (no sean omitidas), evitando que las aplicaciones tengan fallas la primera vez que el usuario las ejecuta o que el usuario encuentre los errores, en lugar de ser encontrados por el equipo de desarrollo. \textbf{}\\
+Asimismo, el hacer pruebas en etapas tempranas del desarrollo es una forma de incorporar la calidad al proceso, resultando en menos errores (bugs) en las etapas finales del proyecto. 
+
+\textbf{}\\
+\textbf{- Diseño enfocado en las necesidades }
+
+El escribir las pruebas primero que el código, obliga a que las necesidades reales del cliente sean consideradas primero, obligando a analizar primero qué es lo que realmente se necesita que el código haga y no al contrario. Como resultado, habrá menos retrabajo después. 
+\textbf{}\\
+\textbf{- Mayor simplicidad en el diseño  }
+
+El escribir las pruebas primero que el código, obliga a que las necesidades reales del cliente sean consideradas primero, obligando a analizar primero qué es lo que realmente se necesita que el código haga y no al contrario. Como resultado, habrá menos retrabajo después. 
+
+\textbf{}\\
+\textbf{- Mayor simplicidad en el diseño  }
+
+Bajo TDD, en lugar de enfocarse en realizar diseños extensos y complejos, el equipo se enfocará en la necesidad o requerimiento del cliente, agregando solamente la funcionalidad que el cliente necesita. Esto es muy importante, pues es la complejidad la que produce los errores. \textbf{}\\
+
+Esto obliga a escribir código enfocado en las necesidades del usuario, evitando antipatrones como los objetos multipropósito (clase gorda) o el acoplamiento del código, dado que desarrollarán códigos específicos a los requerimientos que se estén atendiendo en esa iteración. 
+\textbf{}\\
+\textbf{- El diseño se va adaptando al entendimiento del problema }
+
+A medida que se realizan iteraciones de probar y programar, el entendimiento del problema se incrementa, de esta forma, sucesivas iteraciones cuentan con un mayor entendimiento, lo que reduce los malos entendidos de la funcionalidad al final del desarrollo, resultando en menos retrabajo. 
+
+\textbf{}\\
+\textbf{- Mayor productividad  }
+En un proyecto tradicional, generalmente lo que sucede es que al principio se es muy productivo, sin embargo, esa productividad cae hacia el final del proyecto, cuando empiezan a encontrarse errores en todas partes, se encuentran malentendidos en lo que el cliente quería, o cuando el cliente hace un par de cambios desestabilizadores. \textbf{}\\
+
+En contraposición a este esquema, una de las principales ventajas de TDD es que se obtiene retroalimentación (feedback) inmediato sobre el software desarrollado. \textbf{}\\
+
+Trabajando bajo TDD, al principio se algo improductivo, pues se necesita escribir una serie de casos de prueba que fallaran al primer intento, sin embargo, los beneficios se hacen evidentes cuando se ha probado constantemente la aplicación, se han corregido los errores de forma temprana y de han aclarado de forma temprana las dudas en la funcionalidad.
+
+\textbf{}\\
+\textbf{- Menos tiempo invertido en debugging de errores }
+
+El código se va desarrollando por piezas pequeñas, por ende, cuando surge un error, los esfuerzos se enfocan en la pequeña pieza de código que fue modificada, por lo que se le pueden llegar a los problemas de forma más directa. 
+
+\textbf{2.   Posibles problemas del TDD y sus soluciones }
+\textbf{}\\
+
+\textbf{- Interfaz de usuario}
+\textbf{}\\
+TDD es difícil de implementar en la capa de interfaz de usuario (presentación), debido a que está actividad contiene elementos que contienen a alargar el ciclo de prueba y desarrollo. En su lugar, TDD encaja más fácilmente en los desarrollos en las capas de lógica de negocios (objetos y dominio) y acceso a datos. Por ende, pueden existir reservas respecto a aplicar TDD en una aplicación con alto grado de interacción con el usuario. 
+
+Sin embargo, esto no es necesariamente algo malo, dado que la metodología obliga a separar las capas y a no implementar lógica de negocio en la capa de presentación, lo cual sería un anti patrón. 
+
+\textbf{- La Base de datos }
+\textbf{}\\
+Uno de los principales problemas de usar TDD en aplicaciones con bases de datos, es que una vez que se ha ejecutado una prueba, la base de datos puede quedar en un estado distinto al que se necesita para hacer la siguiente prueba (por ejemplo, si la aplicación necesita cambiar el valor de un campo de A a B, cuando la prueba termina el valor queda en B, por lo que no se puede ejecutar una siguiente prueba). \textbf{}\\
+
+Una forma de abordar este problema es escribir código para inicializar la base de datos en el estado previo, sin embargo esto añade carga de trabajo adicional. \textbf{}\\
+
+Otra solución es utilizar objetos para representar la base de datos, por medio de objetos cascaron, respuestas predefinidas o dummies que emulen las respuestas de la base de datos. 
+
+\textbf{- Errores no identificados }
+\textbf{}\\
+
+Sólo por el hecho de pasar todas las pruebas en la herramienta que se utilize (JUNIT por ejemplo), no significa que no se tengan errores, sólo significa que las pruebas que se han ejecutado no han encontrado errores. El utilizar TDD podría llevar a un falso sentimiento de seguridad, por ende, se necesita enfocarse en que las pruebas sean detalladas y cubran todos los escenarios posibles. 
+
+\textbf{-  Perder la visión general (Ver el árbol en lugar del bosque)  }
+\textbf{}\\
+TDD es un enfoque de abajo hacia arriba (Bottom-Up), y se debe estar al tanto que podría perderse visibilidad general del proyecto y del aplicativo. Es una buena idea mantener un modelo general (bajo un enfoque tradicional como UML) y revisarlo de vez en cuanto, quizás se encuentren oportunidades para refactorizar y hacer que la aplicación se le pueda dar mantenimiento en el tiempo. 
+\textbf{-  Pronunciada curva de aprendizaje }
+Como se ha dicho en otras entregas, TDD es difícil de adoptar, por lo que puede esperarse un descenso en la productividad durante los primeros dos meses de implementación. Lo recomendable para enfrentar esto es buscar ayuda, por medio de formación (cursos) y consultorías que apoyen en la adopción de la nueva forma de trabajo. 
+
+\end{itemize} 
+
+
+
+\end{flushleft}

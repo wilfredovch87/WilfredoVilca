@@ -1,0 +1,220 @@
+\section{Patrones de Diseño Decorator} 
+
+\textbf{}\\
+“Añadir responsabilidades a un objeto de forma dinámica. Los decoradores proporcionan una alternativa flexible a la herencia para extender funcionalidad.”
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/composite1} 
+	\end{center}
+
+
+\begin{flushleft}
+
+El siguiente de los patrones estructurales que veremos sera el patrón Decorator o decorador. Su filosofía consiste en añadir responsabilidades de forma dinámica con el principal objetivo de evitar la conocida como “explosión de clases”, es decir, la generación de un número elevado de subclases a partir de una superclase común.
+Como podemos observar en el gráfico superior, la clase Decorator hereda de la misma clase que el componente que se quiere decorar. Así, cada decorador es capaz de encapsular una instancia de cualquier otro objeto que herede del componente común, bien un componente concreto u otro decorador. Este comportamiento recuerda al que vimos previamente en el patrón Adapter, con la diferencia de que la clase Decorator, a diferencia de la clase Adapter, no transforma una interfaz, sino que añade cierta funcionalidad.
+La encapsulación puede ser iterativa, de modo que un componente concreto puede ser encapsulado por un decorador, que a su vez puede ser encapsulado por otro decorador… y así sucesivamente, añadiendo nueva funcionalidad en cada uno de los pasos. Resumiendo: el patrón Decoratorsustituye la herencia por un proceso iterativo de composición.
+
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator2} 
+	\end{center}
+
+El objeto con el que el objeto cliente interactuará será aquel que se encuentre en la capa más externa (en este caso, DecoratorC), que se encargará de acceder a los objetos contenidos e invocar su funcionalidad, que será devuelta a las capas exteriores.
+Para comenzar, por tanto, debemos tener claros los siguientes conceptos sobre este patrón:
+
+\begin{itemize}
+
+
+
+  \item Un decorador hereda de la misma clase que los objetos que tendrá que decorar.
+  \item Es posible utilizar más de un decorador para encapsular un mismo objeto.
+\item El objeto decorador añade su propia funcionalidad, bien antes, bien después, de delegar el resto del trabajo en el objeto que está decorando.
+\item Los objetos pueden decorarse en cualquier momento, por lo que es posible decorar objetos de forma dinámica en tiempo de ejecución.
+
+\end{itemize} 
+
+\textbf{}\\
+La razón por la que la clase Decorator hereda de la misma clase que el objeto que tendrá que decorar no es la de añadir funcionalidad, sino la de asegurarse de que ambos comparten el mismo tipo y puedan intercambiarse: un decorador podrá sustituir a un objeto decorado, basándonos en el principio SOLID del Principio de sustitución de Liskov.
+
+
+\textbf{Declarando las clases funcionales}
+
+Como viene siendo habitual, ilustraremos nuestro patrón haciendo uso de vehículos. En este caso, utilizaremos una case abstracta, llamada Vehiculo, del que heredarán las clases funcionales a las que llamaremos “Berlina” y “Monovolumen”, y los decoradores, que se limitarán a añadir funcionalidad a estas clases funcionales. Los decoradores que diseñaremos serán “Diesel”, “Gasolina”, “Inyeccion”, “CommonRail” y “Turbo”.
+
+Estos decoradores se caracterizarán por:
+
+\begin{itemize}
+
+
+
+  \item Disponer de una referencia a un vehículo que será inyectada en el constructor.
+  \item Modificar el funcionamiento original de la clase que decoran, sobrecargando los métodos y llamando a los métodos de las clases encapsuladas para modificar su información o funcionamiento.
+
+
+\end{itemize} 
+
+\textbf{}\\ 
+Comencemos codificando nuestra clase abstracta Vehiculo de la cual heredarán el resto de clases.
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator3} 
+	\end{center}
+
+Hecho esto, añadiremos nuestras clases funcionales: Monovolumen y Berlina.
+
+\textbf{Monovolumen}
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator4} 
+	\end{center}
+
+
+\textbf{Berlina}
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator5} 
+	\end{center}
+
+Como vemos, ambas clases heredan un atributo común, “descripcion”, y la funcionalidad VelocidadMaxima y Consumo. Asumiremos que un monovolumen posee una velocidad máxima de 160km/h y un consumo de 7,5 litros/100km, mientras que una berlina podrá alcanzar los 180km/h con un consumo de 6,2 litros/100km. Esta funcionalidad será modificada por nuestras clases decoradoras, que podrán aumentar o disminuir estas características.
+Con esto habríamos codificado nuestra rama “funcional”. Aún no hay rastro del patrón Decorator, ya que únicamente hemos hecho uso de la herencia de la manera habitual (de hecho, de una forma un tanto escueta).
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator6} 
+	\end{center}
+
+\textbf{Creando las clases Decorator}
+
+Es hora, por tanto, de añadir una nueva “rama” a nuestro árbol, añadiendo los decoradores. Comenzaremos por crear una nueva clase abstracta que herede de Vehiculo (para que pueda ocupar su lugar) y de la cual heredarán todos los decoradores.
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator7} 
+	\end{center}
+
+A continuación añadiremos los decoradores, que incluirán una referencia a un vehículo y que se construirán mediante la inyección de éste. Por tanto, las características de estos decoradores, además de heredar de Decorator, serán las siguientes:
+
+\begin{itemize}
+
+
+
+  \item Contienen una referencia a un Vehiculo, que se insertará en el constructor.
+  \item Modifican el funcionamiento de las clases que encapsulan, accediendo a sus atributos y métodos y adaptándolos a la nueva funcionalidad deseada.
+
+
+\end{itemize} 
+
+Comenzaremos añadiendo un decorador llamado “Gasolina”. La gasolina, al ser más explosiva, proporciona mayor velocidad punta, pero al ser menos energética que el gasoil, también conlleva tener un consumo más elevado. Esta clase tendrá, por tanto, el siguiente aspecto:
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator8} 
+	\end{center}
+
+Podemos utilizar un razonamiento análogo para un motor diesel, que tendrá el funcionamiento opuesto.
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator9} 
+	\end{center}
+
+
+¡Ojo! Según nuestro diseño, un vehículo podría ser a la vez diesel y gasolina, ya que ambos heredan de la clase Vehiculo. Las reglas de negocio no deberían permitir que esto fuera así, por lo que deberíamos utilizar reglas adicionales para evitar que ambos decoradores estuviesen presentes en un mismo objeto. No obstante, ignoraremos este hecho en este ejemplo.
+A continuación añadiremos nuevos decoradores a nuestro vehículo. Por ejemplo, el turbo.
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator10} 
+	\end{center}
+
+Otra posible modificación al vehículo original podría ser la inyección de combustible, que no afectará a la velocidad pero mejorará notablemente el consumo de combustible:
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator11} 
+	\end{center}
+
+Tras nuestra última adquisición, nuestra jerarquía de clases tendrá el siguiente aspecto:
+
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator12} 
+	\end{center}
+
+Ahora es posible componer, en tiempo de ejecución, un objeto que combine algunas o todas estas características sin necesidad de codificar una clase por cada posible combinación.
+
+\textbf{Utilizando el patrón Decorator}
+Es hora de hacer uso del patrón que acabamos de explicar. Comenzaremos creando un vehículo monovolumen y otro vehículo de tipo berlina, mostrando por pantalla sus características:
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator13} 
+	\end{center}
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator14} 
+	\end{center}
+\textbf{}\\ 
+Nuestro programa nos mostrará el siguiente resultado:
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator15} 
+	\end{center}
+\textbf{}\\ 
+
+Como vemos, se nos ofrece una versión “básica” de nuestros objetos, que aún no han sido decorados. Probemos a decorar nuestro monovolumen añadiéndole un motor gasolina:
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator16} 
+	\end{center}
+\textbf{}\\ 
+Esto modificará el comportamiento de nuestro monovolumen, que presentará las siguientes características:
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator17} 
+	\end{center}
+\textbf{}\\ 
+Se ha modificado, por tanto, su descripción, velocidad punta y consumo medio. Hagamos lo propio con el vehículo de tipo Berlina, al que convertiremos en un vehículo diesel turbo inyección common-rail:
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator18} 
+	\end{center}
+\textbf{}\\ 
+Como podemos observar, la propia instancia de Vehiculo es pasada como parámetro al constructor, que devuelve la misma instancia decorada con la nueva funcionalidad.
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator19} 
+	\end{center}
+\textbf{}\\ 
+Así, con una única referencia, hemos conseguido modificar el comportamiento de la instancia en tiempo de ejecución sustituyendo la capacidad de especialización de la herencia por un proceso horizontal de composición.
+
+\textbf{¿Cuándo utilizar este patrón? Ejemplos reales?}
+No debemos hacer caso omiso de que la referencia “berlina” ocupará ahora en memoria el quíntuple de lo que originalmente ocupaba, ya que se trata en realidad de una referencia a CommonRail que contiene un objeto Inyeccion que contiene un objeto Turbo que contiene un objeto Diesel que a su vez contiene la instancia Berlina original. Por tanto, conviene estudiar bien el contexto en el que se utilizará este patrón, ya que el ahorro que obtendremos en diseño lo pagaremos en memoria.
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator20} 
+Un ejemplo claro de este patrón en la API de .NET es la familia de clases Stream. La clase Streames una clase abstracta que expone la funcionalidad básica que será implementada por las clases concretas y decoradas por las clases que componen el patrón.
+	\end{center}
+\textbf{}\\ 
+
+Algunas de las clases concretas que podemos encontrar en esta familia son las siguientes:
+
+
+  \item FileStream: representa un flujo (stream) que se encargará de realizar operaciones E/S sobre un fichero físico.
+
+  \item MemoryStream: representa un flujo que realizará operaciones E/S en memoria. Se usa como una proyección temporal en memoria de otro flujo.
+
+  \item 	BufferedStream: representa una sección de un flujo que realizará operaciones E/S en memoria. La diferencia con el anterior es que el MemoryStream representa un flujo completo (por ejemplo, una proyección en memoria de un FileStream), mientras que BufferedStream se usa en conjunción con otros Streams para realizar operaciones de E/S que posteriormente serán leídas o volcadas desde/hacia el flujo original.
+
+Estas clases serían nuestra Berlina y Monovolumen. Pero ¿y los Decorator? Las clases que actúan como decoradores son fácilmente identificables porque reciben un Stream como parámetro a la hora de crear una nueva instancia, a la vez que extienden la funcionalidad del objeto de la clase original.
+\textbf{}\\ 
+Algunos de los decoradores que podemos encontrar, y que son aplicables a cualquiera de las tres clases anteriores son:
+
+  \item 	CryptoStream: define una secuencia que vincula los flujos de datos a las transformaciones criptográficas.
+  \item 	AuthenticatedStream: proporciona métodos para pasar las credenciales a través de una secuencia y solicitar o realizar la autenticación para las aplicaciones de cliente-servidor.
+  \item 	GZipStream: proporciona los métodos y propiedades que permiten comprimir y descomprimir secuencias.
+
+\textbf{}\\ 
+\textbf{}\\ 
+Cada uno de estos Decorator reciben en su constructor un Stream, añadiéndole nuevas funcionalidades y permitiendo que sigan actuando como Stream. Debido al polimorfismo, un CryptoStream que decore un MemoryStream seguirá pudiendo sustituir a cualquier objeto que se pase como parámetro como una referencia a Stream.
+\textbf{}\\ 
+\begin{center}
+	\includegraphics[width=10cm]{./Imagenes/decorator21} 
+
+	\end{center}
+\textbf{}\\ 
+
+
+Podemos ver un ejemplo similar en Java, donde la clase InputStream actuaría como la clase base abstracta, clases como FileInputStream, StringBufferInputStream y ByteArrayInputStream actuarían como clases concretas, FilterInputStream actuaría como la clase abstracta de la que heredan todos los decoradores (clase que no existe en la familia Stream de .NET) y clases como BufferedInputStream, DataInputStream o LineNumberInputStream actuarían como decoradores, recibiendo un objeto de la clase InputStream como parámetro en su constructor.
+
+
+
+
+
+
+\end{flushleft}
